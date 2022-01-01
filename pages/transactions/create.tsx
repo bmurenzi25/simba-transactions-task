@@ -14,31 +14,31 @@ interface Transaction {
     amount: number,
     senderId: number
 }
-function create() {
+function Create() {
     const [users, setUsers] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [isTransactionProcessing, setIsTransactionProcessing] = useState(false);
     const [senderId, setSenderId] = useState(-1)
+    const [token, setToken] = useState('');
 
     useEffect(() => {
         setIsLoading(true);
         const id = localStorage.getItem('id');
+        const token = localStorage.getItem('token');
+        setToken(String(token))
         setSenderId(Number(id));
         // console.log(user)
         const getUsers = async () => {
-            const results = await axios.get(`/api/users/${id}`);
+            const results = await axios.get(`/api/users/${id}`, { headers: { 'Authorization' : `Bearer ${token}` } });
             console.log("GET USERS", results.data);
 
             if (results.status) {
-                setIsLoading(false)
-                console.log(isLoading);
-
                 const users_ = results.data.data;
                 setUsers(users_)
             } else {
-                setIsLoading(false)
                 alert("ERRRRRRRROR")
             }
+            setIsLoading(false)
         }
         getUsers();
     }, []);
@@ -57,7 +57,7 @@ function create() {
         }),
         onSubmit: async ({ receiverId, source_currency, target_currency, amount }) => {
             setIsTransactionProcessing(true);
-            const result = await axios.post('/api/transactions/create', { receiverId, source_currency, target_currency, amount, senderId });
+            const result = await axios.post('/api/transactions/create', { receiverId, source_currency, target_currency, amount, senderId }, { headers : { 'Authorization' : `Bearer ${token}` }});
 
             const { data } = result.data;
             setIsTransactionProcessing(false);
@@ -129,4 +129,4 @@ function create() {
     )
 }
 
-export default create
+export default Create

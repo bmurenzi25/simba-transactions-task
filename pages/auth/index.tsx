@@ -1,7 +1,7 @@
 import { useFormik } from 'formik'
 import Link from 'next/link'
 import React, { useEffect, useReducer, useState } from 'react'
-import * as Yup from 'Yup';
+import * as Yup from 'yup';
 import axios from 'axios';
 import Router from 'next/router';
 import { CircularProgress } from '@mui/material';
@@ -28,7 +28,7 @@ function Auth() {
         validationSchema: Yup.object({
             email: Yup.string().max(30, 'Email should not be greater than 30 characters long').required(),
             password: Yup.string().max(30, 'Password should not be greater than 30 characters long').required(),
-            name: page.showRegistrationForm ? Yup.string().max(255, 'Name shoukd not be more than 250 characters long').required() : null
+            name: page.showRegistrationForm ? Yup.string().max(255, 'Name shoukd not be more than 250 characters long').required() : Yup.string().max(250, 'Name shoukd not be more than 250 characters long')
         }),
         onSubmit: async ({email, password, name}) => {
             setisLoading(true)

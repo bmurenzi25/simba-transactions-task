@@ -9,7 +9,7 @@ const signIn = async (req: NextApiRequest, res: NextApiResponse) => {
       const { email, password } = req.body;
         console.log(req.body);
         
-      const userExists = await prisma.user.findUnique({
+      const userExists:any = await prisma.user.findUnique({
         where: {
           email,
         },

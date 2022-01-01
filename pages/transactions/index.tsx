@@ -4,21 +4,22 @@ import React, { useEffect, useState } from 'react'
 import Header from '../../components/header';
 import Image from 'next/image'
 
-function index() {
+function Index() {
     const [data, setData] = useState([]);
     const [userId, setuserId] = useState(-1);
-    const [account, setAccount] = useState('')
+    const [account, setAccount] = useState({balanceUSD: '', balanceNGN: '', balanceEUR: ''})
 
     useEffect(() => {
         const id = localStorage.getItem('id');
+        const token = localStorage.getItem('token');
         setuserId(Number(id))
         const acc_id = localStorage.getItem('account_no');
         const getAccountData = async (acc_id: number) => {
-            const account = await axios.get(`/api/accounts/${acc_id}`);
+            const account = await axios.get(`/api/accounts/${acc_id}`, { headers:{ 'Authorization' : `Bearer ${token}` } });
             setAccount(account.data.data)
         }
         const getTransactions = async (id: number) => {
-            const transactions = await axios.get(`/api/transactions/${id}`);
+            const transactions = await axios.get(`/api/transactions/${id}`, { headers: { 'Authorization' : `Bearer ${token}` } });
             setData(transactions.data.data);
         }
         getAccountData(Number(acc_id));
@@ -33,21 +34,21 @@ function index() {
                         <Image src={'/usd.jpeg'} width={60} height={60} />
                         <div className='flex flex-col justify-around'>
                             <p className='font-bold'>USD BALANCE</p>
-                            <p>{account.balanceUSD}</p>
+                            <p>{account.balanceUSD && account.balanceUSD}</p>
                         </div>
                     </div>
                     <div className='flex gap-4'>
                         <Image src={'/ngn.png'} width={60} height={60} />
                         <div className='flex flex-col justify-around'>
                             <p className='font-bold'>NGN BALANCE</p>
-                            <p>{account.balanceNGN}</p>
+                            <p>{account.balanceNGN &&account.balanceNGN}</p>
                         </div>
                     </div>
                     <div className='flex gap-4'>
                         <Image src={'/eur.png'} width={60} height={60} />
                         <div className='flex flex-col justify-around'>
                             <p className='font-bold'>EUR BALANCE</p>
-                            <p>{account.balanceEUR}</p>
+                            <p>{account.balanceEUR && account.balanceEUR}</p>
                         </div>
                     </div>
                 </div>
@@ -88,4 +89,4 @@ function index() {
     )
 }
 
-export default index
+export default Index
