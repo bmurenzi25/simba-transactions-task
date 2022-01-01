@@ -26,14 +26,13 @@ const signUp = async (req: NextApiRequest, res: NextApiResponse) => {
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(password, salt);
 
-      const user = await prisma.user.create({
+      const user:any = await prisma.user.create({
         data: {
           name,
           email,
           password: hash,
         },
       });
-      console.log(user);
       
       const account = await prisma.account.create({
           data: {

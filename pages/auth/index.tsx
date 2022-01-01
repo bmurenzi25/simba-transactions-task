@@ -28,7 +28,7 @@ function Auth() {
         validationSchema: Yup.object({
             email: Yup.string().max(30, 'Email should not be greater than 30 characters long').required(),
             password: Yup.string().max(30, 'Password should not be greater than 30 characters long').required(),
-            name: page.showRegistrationForm ? Yup.string().max(255, 'Name shoukd not be more than 250 characters long').required() : null
+            name: page.showRegistrationForm && Yup.string().max(255, 'Name shoukd not be more than 250 characters long').required() 
         }),
         onSubmit: async ({email, password, name}) => {
             setisLoading(true)

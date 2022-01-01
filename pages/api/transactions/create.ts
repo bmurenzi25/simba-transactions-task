@@ -8,7 +8,7 @@ const createTransaction = async (req: NextApiRequest, res: NextApiResponse) => {
             
             const id = Number(receiverId);
             
-            const receiver_account = await prisma.account.findFirst({
+            const receiver_account:any = await prisma.account.findFirst({
                 where: {
                     userId: id
                 }
@@ -28,12 +28,12 @@ const createTransaction = async (req: NextApiRequest, res: NextApiResponse) => {
                     data: {},
                 });
             }
-            const receiver = await prisma.user.findUnique({
+            const receiver:any = await prisma.user.findUnique({
                 where: {
                     id: receiver_account.userId
                 }
             });
-            const senderAccount = await prisma.account.findFirst({
+            const senderAccount:any = await prisma.account.findFirst({
                 where: {
                     userId: senderId
                 }
